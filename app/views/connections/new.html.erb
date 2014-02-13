@@ -1,0 +1,69 @@
+<div id="form_header">
+	<div id="form_header_img"></div>
+	<div id="form_header_caption">
+		We all meet a lot of people. <br/>
+		Since I gave you my card and you came to
+		this site, how about we stay in touch. <br/>
+		Cool?
+	</div>
+</div>
+
+<hr class="header_space"/>
+
+<%= render 'form' %>
+
+<script language="javascript">
+	$j(document).ready(function() {
+		if (Modernizr.geolocation) {
+			$j('form.new_connection div#use_loc').css("display", "block");
+		}
+
+		$j('div#use_loc a#here').click(function() {
+			//alert("Getting your location...");
+			if (geo_position_js.init()) {
+				$j("input#connection_where").val("Getting nearby places...");
+				geo_position_js.getCurrentPosition(geo_success, geo_error);
+			} else {
+				alert("Sorry, iMet's location feature ran into a problem with your browser.");
+			}
+		});
+		
+		$j('div#other_loc a#other').click(function() {
+			//$j("input#latlon").val("")
+			$j("input#connection_where").val("").show();
+			$j("div#use_loc").show();
+			$j("select#nearby").html("").hide();
+			$j("div#other_loc").hide();
+		});
+	});
+	
+	function geo_success(loc) {
+		//alert("Found you at latitude " + loc.coords.latitude +
+		//     ", longitude " + loc.coords.longitude);
+		var latlon = loc.coords.latitude + "," + loc.coords.longitude;
+		$j.post("/nearby", { "location": latlon },
+		  function(json) {
+			if (json.data[1].name) {
+				$j("select#nearby").html('<option value="">Choose One...</option>');
+				$j.each(json.data, function (i) {
+					//alert("JSON...\n\n" + json.data[i].name);
+					$j("select#nearby").append('<option value="' + json.data[i].name + '">' + json.data[i].name + "</option>\n");
+				});
+				$j("input#connection_where").hide().val("");
+				$j("div#use_loc").hide();
+				$j("select#nearby").css("display", "inline").show();
+				$j("div#other_loc").css("display", "block").show();
+			} else if (json.data[0].name) {
+				$j('input#connection_where').val(json.data[0].name);
+			} else {
+				$j("input#connection_where").val("");
+				alert("Sorry, no nearby locations were found.");
+			}
+		}, "json");
+	}
+	
+	function geo_error() {
+		$j("input#location").val("");
+		alert("Sorry, couldn't find your location.\n\nPlease try enabling your device's Location Services setting and/or allow this page to use your current location when prompted.");
+	}
+</script>

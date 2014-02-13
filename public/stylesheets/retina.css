@@ -1,0 +1,11 @@
+div#form_header_img {
+	background-image: url("/images/hello-retina.jpg");
+}
+
+div#home_header_img {
+	background-image: url("/images/imet-retina.gif");
+}
+
+div#thanks_header_img {
+	background-image: url("/images/thanks-retina.gif");
+}

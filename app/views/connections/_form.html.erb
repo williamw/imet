@@ -1,0 +1,51 @@
+<%= form_for(@connection) do |f| %>
+  <% if @connection.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@connection.errors.count, "error") %> prohibited this connection from being saved:</h2>
+
+      <ul>
+      <% @connection.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %> <br/>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :when %><br />
+	<%= f.date_select :when,
+		:order => [ :month, :day, :year ],
+		:use_short_month => true,
+		:start_year => (Time.now.year - 1),
+		:end_year => (Time.now.year + 1) %>
+  </div>
+  <div class="field">
+    <%= f.label :where %><br />
+    <%= f.text_field :where %>
+	<select name="connection[where]" id="nearby"></select>
+	<div id="other_loc"><a href="#location_field" id="other">Not Listed?</a></div>
+	<input type="hidden" size="30"  maxlength="255" name="latlon" id="latlon">
+	<div id="use_loc">
+		<a href="#get_location" id="here">Nearby Places</a> <br/>
+	</div>
+  </div>
+
+  <div class="field">
+    <%= f.label :details %><br />
+    <%= f.text_area :details %>
+	<div class="optional">Optional: What we talked about, <br/> something unique about you, etc.</div>
+  </div>
+  <div class="field">
+    <%= f.label :social %><br />
+    <%= f.text_area :social %>
+	<div class="optional">Optional: Twitter handle, e-mail <br/> address, or other links to share</div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

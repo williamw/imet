@@ -1,0 +1,146 @@
+<html>
+<head>
+	<title>We Met at SXSW 2011</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<link rel="stylesheet" href="css/default.css" type="text/css" media="screen" /> 
+	<link rel="stylesheet" href="css/mobile.css" type="text/css" media="handheld, only screen and (max-width: 767px)" /> 
+	<link rel="stylesheet" href="css/retina.css" type="text/css" media="handheld, only screen and (-webkit-min-device-pixel-ratio: 2)" />
+	<!--
+		With special thanks to:
+			http://diveintohtml5.org/geolocation.html
+			http://37signals.com/svn/posts/2609-customizing-web-forms-with-css3-and-webkit
+			http://blog.iwalt.com/2010/06/targeting-the-iphone-4-retina-display-with-css3-media-queries.html
+	-->
+</head>
+
+<body>
+
+<div id="header">
+	<div id="header_img"></div>
+	<div id="header_caption">
+		We all meet a lot of people at SXSW. <br/>
+		Since I gave you this card and you took the initiative
+		to visit this site, how about we stay in touch. Cool?
+	</div>
+</div>
+
+<form action="met.php" method="post">
+	<div class="fieldset">
+		<div class="prompt">What's Your Name?</div>
+		<div class="field"><input type="text" size="30" name="name" maxlength="30"></div>
+	</div>
+	
+	<div class="fieldset">
+		<div class="prompt">When Did We Meet?</div>
+		<div class="field">
+			<select name="date" id="date">
+				<option value="">Choose One...</option>
+				<option value="3/11/2011">Friday 3/11</option>
+				<option value="3/12/2011">Saturday 3/12</option>
+				<option value="3/13/2011">Sunday 3/13</option>
+				<option value="3/14/2011">Monday 3/14</option>
+				<option value="3/15/2011">Friday 3/15</option>
+			</select>
+		</div>
+	</div>
+	
+	<div class="fieldset" id="location_field">
+		<div class="prompt">Where Did We Meet?</div>
+		<div class="field">
+			<input type="text" size="30"  maxlength="255" name="location" id="location">
+			<select name="nearby" id="nearby"></select>
+			<div id="other_loc"><a href="#location_field" id="other">Not Listed?</a></div>
+			<input type="hidden" size="30"  maxlength="255" name="latlon" id="latlon">
+			<span id="use_loc"><a href="#location_field" id="here">Here</a></span>
+
+		</div>
+	</div>
+	
+	<div class="fieldset">
+		<div class="prompt">Any Pertinent Details?</div>
+		<div class="field">
+			<textarea rows="4" cols="30" name="details"></textarea>
+		</div>
+		<div class="optional">Panel we saw, what we talked about</div>
+	</div>
+	
+	<div class="fieldset">
+		<div class="prompt">Your Sites &amp; Social Networks:</div>
+		<div class="field">
+			<textarea rows="4" cols="30" name="details"></textarea>
+		</div>
+		<div class="optional">Twitter handle, Facebook name/address,<br> blog and such</div>
+	</div>
+
+	<div class="fieldset">
+		<div class="prompt">Your E-mail Address:</div>
+		<div class="field">
+			<input type="text" size="30" maxlength="100" name="name">
+			<div class="optional">I'll send you a copy of this page <br/>and share my info too</div>
+		</div>
+	</div>
+
+	<div class="fieldset" id="submit">
+		<input type="submit" value="Submit">
+	</div>
+</form>
+
+<script src="js/modernizr-1.7.min.js" language="javascript"></script>
+<script src="js/jquery-1.5.min.js" language="javascript"></script>
+<script src="js/geo.js" language="javascript"></script>
+<script language="javascript">
+	$(document).ready(function() {
+		if (Modernizr.geolocation) {
+			$('span#use_loc').css("display", "inline");
+		}
+
+		$('span#use_loc a#here').click(function() {
+			//alert("Getting your location...");
+			if (geo_position_js.init()) {
+				$("input#location").val("Getting nearby places...");
+				geo_position_js.getCurrentPosition(geo_success, geo_error);
+			}
+		});
+		
+		$('div#other_loc a#other').click(function() {
+			$("input#latlon").val("")
+			$("input#location").val("").show();
+			$("span#use_loc").show();
+			$("select#nearby").hide();
+			$("div#other_loc").hide();
+		});
+	});
+	
+	function geo_success(loc) {
+		//alert("Found you at latitude " + loc.coords.latitude +
+		//     ", longitude " + loc.coords.longitude);
+		var latlon = loc.coords.latitude + "," + loc.coords.longitude;
+		$('input#latlon').val(latlon);
+		$.getJSON('nearby.php?loc=' + latlon, function(json) {
+			if (json.data[1].name) {
+				$("select#nearby").html('<option value="">Choose One...</option>');
+				$.each(json.data, function (i) {
+					//alert("JSON...\n\n" + json.data[i].name);
+					$("select#nearby").append('<option value="' + json.data[i].name + '">' + json.data[i].name + "</option>\n");
+				});
+				$("input#location").hide().val("");
+				$("span#use_loc").hide();
+				$("select#nearby").css("display", "inline").show();
+				$("div#other_loc").css("display", "block").show();
+			} else if (json.data[0].name) {
+				$('input#location').val(json.data[0].name);
+			} else {
+				$("input#location").val("");
+				alert("Sorry, no nearby locations were found.");
+			}
+		});
+	}
+	
+	function geo_error() {
+		$("input#location").val("");
+		alert("Sorry, couldn't find your location.\n\nPlease try enabling your device's Location Services setting and/or allow this page to use your current location when prompted.");
+	}
+</script>
+
+</body>
+</html>

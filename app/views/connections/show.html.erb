@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Your Name:</b>
+  <%= @connection.name %>
+</p>
+
+<p>
+  <b>When We Met:</b>
+  <%= @connection.when %>
+</p>
+
+<p>
+  <b>Where We Met:</b>
+  <%= @connection.where %>
+</p>
+
+<p>
+  <b>Pertinent Details:</b>
+  <%= @connection.details %>
+</p>
+
+<p>
+  <b>Sites &amp; Social Networks:</b>
+  <%= @connection.social %>
+</p>
+
+<%= link_to 'Edit', edit_connection_path(@connection) %> |
+<%= link_to 'Back', connections_path %>

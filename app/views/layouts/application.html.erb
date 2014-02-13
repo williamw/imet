@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>iMet</title>
+  <%= csrf_meta_tag %>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+
+  <%= stylesheet_link_tag 'scaffold', 'formspage' %>
+  <link rel="stylesheet" href="/stylesheets/mobile.css" type="text/css" media="handheld, only screen and (max-width: 767px)" /> 
+  <link rel="stylesheet" href="/stylesheets/retina.css" type="text/css" media="handheld, only screen and (-webkit-min-device-pixel-ratio: 2)" />
+
+  <%= javascript_include_tag :defaults %>
+  <%= javascript_include_tag 'jquery-1.5.min', 'modernizr-1.7.min', 'geo' %>
+  <script language="javascript">
+	//Allow JQuery to work alongside other libraries
+	var $j = jQuery.noConflict();
+  </script>
+
+	<!--
+		With special thanks to:
+			http://diveintohtml5.org/geolocation.html
+			http://37signals.com/svn/posts/2609-customizing-web-forms-with-css3-and-webkit
+			http://blog.iwalt.com/2010/06/targeting-the-iphone-4-retina-display-with-css3-media-queries.html
+	-->
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

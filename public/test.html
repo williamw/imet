@@ -1,0 +1,30 @@
+<p>
+	Location: <input type="text" id="loc" value="41.897143,-87.643751">
+	<a href="#" id="test">Test</a>
+</p>
+
+<p>Nearby: <select id="nearby"></select></p>
+
+<p>Test Data: <br/>
+<textarea rows="5" cols="30" id="test_data">38.898556,-77.037852
+41.897143,-87.643751
+43.421008,-83.957519</textarea>
+</p>
+
+<script language="javascript" src="javascripts/jquery-1.5.min.js"></script>
+<script language="javascript">
+$(document).ready(function() {
+	$("a#test").click(function() {
+		var loc = $("input#loc").val();
+		$.post("nearby", { "location": loc },
+		 function(json){
+			//alert("posting...");
+			$("select#nearby").html('<option value="">Choose One...</option>');
+			$.each(json.data, function (i) {
+				//alert("JSON...\n\n" + json.data[i].name);
+				$("select#nearby").append('<option value="' + json.data[i].name + '">' + json.data[i].name + "</option>\n");
+			});
+		 }, "json");
+	});
+});
+</script>

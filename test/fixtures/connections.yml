@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  when: MyString
+  where: MyString
+  details: MyText
+  social: MyText
+
+two:
+  name: MyString
+  when: MyString
+  where: MyString
+  details: MyText
+  social: MyText
