@@ -4,7 +4,7 @@ iMet is a physical-to-digital gateway to help you bridge the gap between meeting
 
 From the Creator
 ----------------
-This app is a proof of concept [I](http://welense.com/) started in 2011 to learn Ruby on Rails and try out some new tricks with HTML5.
+This app is a proof of concept [I started](http://welense.com/) in 2011 to learn Ruby on Rails and try out some new tricks with HTML5.
 
 Acknowledgements
 ----------------
