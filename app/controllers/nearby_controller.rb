@@ -13,8 +13,8 @@ class NearbyController < ApplicationController
     #Need error handling here. (Assumes access_token is returned)
     access_token = get_https("https://graph.facebook.com",
                          "/oauth/access_token",
-                         {"client_id"     => "203847266297363",
-                          "client_secret" => "6f05b07dd67e0dd016388c630eab6417",
+                         {"client_id"     => "644603222253805",
+                          "client_secret" => "c1819eb3bb3dc02d9ce49a98bb7f7d57",
                           "grant_type"    => "client_credentials"}).body.split("=")
     
     #2. Render the nearby places as plain-text in JSON format
