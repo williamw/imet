@@ -8,13 +8,16 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308221014) do
+ActiveRecord::Schema.define(version: 20110307153409) do
 
-  create_table "connections", :force => true do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "connections", force: :cascade do |t|
     t.string   "name"
-    t.date     "when",       :limit => 255
+    t.date     "when"
     t.string   "where"
     t.text     "details"
     t.text     "social"
